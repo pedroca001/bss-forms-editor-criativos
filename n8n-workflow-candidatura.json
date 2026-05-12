@@ -111,7 +111,7 @@
             "cpf": "={{ $json.cpf }}",
             "idade": "={{ $json.idade }}",
             "email": "={{ $json.email }}",
-            "celular": "={{ $json.celular }}",
+            "celular": "='{{ $json.celular }}",
             "expectativa_remuneracao": "={{ $json.expectativa_remuneracao }}",
             "nivel_ingles": "={{ $json.nivel_ingles }}",
             "nivel_experiencia": "={{ $json.nivel_experiencia }}",
