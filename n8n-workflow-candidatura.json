@@ -74,7 +74,7 @@
       "position": [820, 240],
       "credentials": {
         "telegramApi": {
-          "id": "",
+          "id": "VlNV1ssb2ec5YoTZ",
           "name": "Telegram vagasbssbot"
         }
       },
@@ -143,8 +143,8 @@
       "position": [820, 480],
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "",
-          "name": "Google Sheets"
+          "id": "WEgGnutZ2aRmAiW2",
+          "name": "healthylife sheets"
         }
       },
       "continueOnFail": true,
