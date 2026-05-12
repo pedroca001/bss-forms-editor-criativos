@@ -5,10 +5,10 @@
       "parameters": {
         "httpMethod": "POST",
         "path": "formulario",
-        "responseMode": "responseNode",
-        "options": {
-          "allowedOrigins": "*"
-        }
+        "responseMode": "onReceived",
+        "responseData": "noData",
+        "responseCode": 200,
+        "options": {}
       },
       "id": "node-webhook",
       "name": "Webhook · Formulário",
@@ -16,20 +16,6 @@
       "typeVersion": 2,
       "position": [120, 360],
       "webhookId": "formulario"
-    },
-    {
-      "parameters": {
-        "respondWith": "json",
-        "responseBody": "={ \"ok\": true, \"message\": \"Candidatura recebida\" }",
-        "options": {
-          "responseCode": 200
-        }
-      },
-      "id": "node-respond",
-      "name": "Respond · 200 OK",
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.1,
-      "position": [340, 360]
     },
     {
       "parameters": {
@@ -59,59 +45,21 @@
       "name": "Normalize · Edit Fields",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
+      "position": [340, 360]
+    },
+    {
+      "parameters": {
+        "jsCode": "function esc(v) {\n  if (v === null || v === undefined) return '';\n  return String(v)\n    .replace(/&/g, '&amp;')\n    .replace(/</g, '&lt;')\n    .replace(/>/g, '&gt;');\n}\nreturn $input.all().map(item => {\n  const b = item.json;\n  const out = {};\n  for (const k of Object.keys(b)) {\n    out[k] = b[k];\n    out['tg_' + k] = esc(b[k]);\n  }\n  return { json: out };\n});"
+      },
+      "id": "node-escape",
+      "name": "Escape HTML",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [560, 360]
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "loose"
-          },
-          "conditions": [
-            {
-              "id": "v1",
-              "leftValue": "={{ $json.nome_completo }}",
-              "rightValue": "",
-              "operator": { "type": "string", "operation": "notEmpty", "singleValue": true }
-            },
-            {
-              "id": "v2",
-              "leftValue": "={{ $json.email }}",
-              "rightValue": "",
-              "operator": { "type": "string", "operation": "notEmpty", "singleValue": true }
-            },
-            {
-              "id": "v3",
-              "leftValue": "={{ $json.cpf }}",
-              "rightValue": "",
-              "operator": { "type": "string", "operation": "notEmpty", "singleValue": true }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "id": "node-validate",
-      "name": "Validate · IF",
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [780, 360]
-    },
-    {
-      "parameters": {
-        "jsCode": "// Escapa caracteres HTML para uso seguro em parse_mode=HTML no Telegram.\nfunction esc(v) {\n  if (v === null || v === undefined) return '';\n  return String(v)\n    .replace(/&/g, '&amp;')\n    .replace(/</g, '&lt;')\n    .replace(/>/g, '&gt;');\n}\nreturn $input.all().map(item => {\n  const b = item.json;\n  const out = {};\n  for (const k of Object.keys(b)) {\n    out[k] = b[k];\n    out['tg_' + k] = esc(b[k]);\n  }\n  return { json: out };\n});"
-      },
-      "id": "node-escape",
-      "name": "Escape HTML · p/ Telegram",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [1020, 240]
-    },
-    {
-      "parameters": {
-        "chatId": "={{ \"-5233253304\" }}",
+        "chatId": "-5233253304",
         "text": "=🟢 <b>Nova candidatura — Editor de Criativos</b>\n<i>{{ $json.data_envio }}</i>\n\n👤 <b>Nome:</b> {{ $json.tg_nome_completo }}\n🪪 <b>CPF:</b> {{ $json.tg_cpf }}\n🎂 <b>Idade:</b> {{ $json.tg_idade }}\n📧 <b>E-mail:</b> {{ $json.tg_email }}\n📱 <b>Celular:</b> {{ $json.tg_celular }}\n💰 <b>Pretensão:</b> R$ {{ $json.tg_expectativa_remuneracao }}\n🌐 <b>Inglês:</b> {{ $json.tg_nivel_ingles }}\n🎬 <b>Experiência:</b> {{ $json.tg_nivel_experiencia }}\n📹 <b>Tipos de vídeo:</b> {{ $json.tg_tipos_video }}\n🛠 <b>Softwares:</b> {{ $json.tg_softwares_edicao }}\n🤖 <b>IAs que usa:</b> {{ $json.tg_inteligencias_artificiais }}\n📚 <b>Cursos:</b> {{ $json.tg_cursos_mentorias }}\n🔗 <b>Portfólio:</b> {{ $json.portfolio || 'Não informado' }}\n📸 <b>Instagram:</b> {{ $json.tg_instagram }}\n📣 <b>Como soube:</b> {{ $json.tg_origem_vaga }}",
         "additionalFields": {
           "appendAttribution": false,
@@ -123,7 +71,7 @@
       "name": "Telegram · Aviso",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
-      "position": [1240, 240],
+      "position": [820, 240],
       "credentials": {
         "telegramApi": {
           "id": "",
@@ -186,15 +134,13 @@
             { "id": "origem_vaga",               "displayName": "origem_vaga",               "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true }
           ]
         },
-        "options": {
-          "handlingExtraData": "insertInNewColumn"
-        }
+        "options": {}
       },
       "id": "node-sheets",
       "name": "Google Sheets · Append",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
-      "position": [1020, 480],
+      "position": [820, 480],
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "",
@@ -203,44 +149,10 @@
       },
       "continueOnFail": true,
       "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "errorMessage": "=Candidatura rejeitada — campos obrigatórios ausentes. Body recebido: {{ JSON.stringify($('Webhook · Formulário').item.json.body || {}) }}"
-      },
-      "id": "node-stop",
-      "name": "Stop · Dados inválidos",
-      "type": "n8n-nodes-base.stopAndError",
-      "typeVersion": 1,
-      "position": [1020, 680]
-    },
-    {
-      "parameters": {
-        "content": "## 📥 BSS — Candidatura Editor de Criativos\n\n**Pipeline:** Webhook → Respond 200 → Normalize → Validate → (Telegram + Sheets em paralelo)\n\n**Antes de ativar, configure:**\n\n1. **Telegram** — crie credencial com bot token `8771377909:AAEFG_egqXoFOM6Vc8cpnCRmFWbwqTNbgNQ` e selecione no nó. Confirme o Chat ID do grupo no campo (atual: `-5233253304`).\n\n2. **Google Sheets** — selecione a credencial OAuth2 conectada. Confirme que a Página1 tem os 16 headers na primeira linha:\n   `data_envio | nome_completo | cpf | idade | email | celular | expectativa_remuneracao | nivel_ingles | nivel_experiencia | tipos_video | softwares_edicao | inteligencias_artificiais | cursos_mentorias | portfolio | instagram | origem_vaga`\n\n3. **BotFather** — execute `/setprivacy` → Disable para `@vagasbssbot` (necessário pra bot operar em grupos).\n\n4. **Error Workflow** (opcional, recomendado) — em Settings, configure um workflow de erro com nó Error Trigger + Telegram pro seu chat pessoal.\n\n**Ativar:** toggle no canto superior direito.",
-        "height": 380,
-        "width": 460,
-        "color": 4
-      },
-      "id": "node-note",
-      "name": "📋 Setup",
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [120, -40]
     }
   ],
   "connections": {
     "Webhook · Formulário": {
-      "main": [
-        [
-          {
-            "node": "Respond · 200 OK",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Respond · 200 OK": {
       "main": [
         [
           {
@@ -255,18 +167,7 @@
       "main": [
         [
           {
-            "node": "Validate · IF",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Validate · IF": {
-      "main": [
-        [
-          {
-            "node": "Escape HTML · p/ Telegram",
+            "node": "Escape HTML",
             "type": "main",
             "index": 0
           },
@@ -275,17 +176,10 @@
             "type": "main",
             "index": 0
           }
-        ],
-        [
-          {
-            "node": "Stop · Dados inválidos",
-            "type": "main",
-            "index": 0
-          }
         ]
       ]
     },
-    "Escape HTML · p/ Telegram": {
+    "Escape HTML": {
       "main": [
         [
           {
@@ -300,10 +194,9 @@
   "pinData": {},
   "settings": {
     "executionOrder": "v1",
-    "saveExecutionProgress": true,
-    "saveManualExecutions": true,
     "saveDataErrorExecution": "all",
-    "saveDataSuccessExecution": "all"
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true
   },
   "staticData": null,
   "tags": []
