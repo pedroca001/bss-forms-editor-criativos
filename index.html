@@ -492,49 +492,30 @@ function Landing() {
 
       <header className="hero">
         <div className="container">
-          <p className="eyebrow hero-eyebrow">Editor de Criativo · Direct Response</p>
+          <p className="eyebrow hero-eyebrow">Vaga · Editor de Criativos</p>
           <h1 className="display-xl hero-title">
-            Você edita pensando no <span className="accent">clique,</span> não no like.
+            Editor de <span className="accent">Criativos</span>
           </h1>
-          <p className="body-lg" style={{ color: 'var(--ink-muted)', maxWidth: '56ch' }}>
-            Buscamos um editor fixo para construir criativos que performam de verdade — vídeos que travam o scroll e microleads que convertem. Posição de longo prazo dentro de uma operação enxuta e movida a resultado.
+          <p className="body-lg" style={{ color: 'var(--ink-muted)', maxWidth: '60ch' }}>
+            A BSS Performance Marketing opera com campanhas de direct response no mercado de nutra nos Estados Unidos. Aqui, cada criativo é tratado como uma alavanca de resultado — e a pessoa que edita é parte central dessa engrenagem.
+          </p>
+          <p className="body" style={{ color: 'var(--ink-subtle)', maxWidth: '60ch', marginTop: 12 }}>
+            Acreditamos que alinhamento de cultura importa tanto quanto habilidade técnica. Antes de se candidatar, <a href="#" className="accent" style={{ borderBottom: '1px solid rgba(94,106,210,0.4)' }}>conheça mais sobre quem somos</a>.
           </p>
           <div className="hero-actions">
             <a href={ROUTES.FORM} className="btn btn-primary btn-lg" onClick={onApply}>
               Preencher candidatura <span className="arrow">→</span>
             </a>
-            <a href="#vaga" className="btn btn-secondary btn-lg">Ver detalhes</a>
+            <a href="#cargo" className="btn btn-secondary btn-lg">Ver detalhes da vaga</a>
           </div>
         </div>
       </header>
 
-      <section className="section" id="vaga">
-        <div className="container">
-          <p className="body-lg" style={{ color: 'var(--ink-muted)', maxWidth: '64ch', marginBottom: 16 }}>
-            Na BSS Marketing, a gente opera no mercado de infoprodutos com foco em campanhas de direct response. Isso significa ciclos rápidos, muita iteração e total comprometimento com o que os números dizem.
-          </p>
-          <p className="body-lg" style={{ color: 'var(--ink-muted)', maxWidth: '64ch' }}>
-            Cultura aqui é feita de autonomia, velocidade e responsabilidade. Se você quer entender melhor como a gente funciona antes de aplicar, <a href="#" className="accent" style={{ borderBottom: '1px solid rgba(94,105,210,0.4)' }}>leia mais sobre a empresa</a>.
-          </p>
-        </div>
-      </section>
-
-      <section className="section">
+      <section className="section" id="cargo">
         <div className="container">
           <div className="section-head">
-            <p className="eyebrow">O que você vai produzir</p>
-          </div>
-          <div className="grid-2">
-            <div className="feature-card">
-              <p className="eyebrow">Formato 01</p>
-              <h3>Criativos de Performance</h3>
-              <p>Vídeos construídos para parar o scroll — com foco em hooks cirúrgicos, timing de corte e avatares que se conectam com o público.</p>
-            </div>
-            <div className="feature-card">
-              <p className="eyebrow">Formato 02</p>
-              <h3>Microleads</h3>
-              <p>Conteúdos curtos voltados para captura e qualificação de leads dentro dos funis de venda. Objetivo claro, execução precisa.</p>
-            </div>
+            <p className="eyebrow">Cargo</p>
+            <h2 className="display-md">Editor audiovisual de criativos</h2>
           </div>
         </div>
       </section>
@@ -542,14 +523,13 @@ function Landing() {
       <section className="section">
         <div className="container">
           <div className="section-head">
-            <p className="eyebrow">Responsabilidades</p>
+            <p className="eyebrow">Atribuições do cargo</p>
           </div>
           <div className="row-list">
             {[
-              'Editar criativos de alta performance, com domínio de ritmo, corte e storytelling visual alinhado ao direct response.',
-              'Manter comunicação ativa com o time para garantir o fluxo de entrega e resolver impasses antes que virem problema.',
-              'Acompanhar o que está funcionando no mercado — tendências, formatos, abordagens — e trazer isso para a edição.',
-              'Participar dos ciclos de teste e revisão, ajustando peças com base em dados reais de tráfego pago.'
+              'Utilizar suas habilidades audiovisuais para produzir edições de criativos focados em alta conversão.',
+              'Estar em contato permanente com o time, garantindo o andamento dos projetos e a remoção rápida de qualquer impedimento.',
+              'Acompanhar as tendências do setor e as melhores práticas de edição — a empresa oferece treinamentos contínuos para desenvolvimento do colaborador.'
             ].map((t, i) => (
               <div className="row-item" key={i}>
                 <div className="row-num">{String(i + 1).padStart(2, '0')}</div>
@@ -564,14 +544,36 @@ function Landing() {
       <section className="section">
         <div className="container">
           <div className="section-head">
-            <p className="eyebrow">O que buscamos</p>
+            <p className="eyebrow">O que esperamos</p>
+          </div>
+          <div className="grid-2">
+            <div className="feature-card">
+              <p className="eyebrow">Formato 01</p>
+              <h3>Criativos de Performance</h3>
+              <p>Peças em vídeo voltadas para mídia paga — com foco em hooks fortes, ritmo de corte preciso e narrativas que conectam com o público.</p>
+            </div>
+            <div className="feature-card">
+              <p className="eyebrow">Formato 02</p>
+              <h3>Microleads</h3>
+              <p>Conteúdos curtos pensados para captação e qualificação dentro de funis de venda. Clareza de objetivo e execução enxuta.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <div className="section-head">
+            <p className="eyebrow">Requisitos</p>
           </div>
           <div className="row-list">
             {[
-              { t: 'Portfólio com criativos de performance comprovados — reels, cortes e vídeos para mídia paga.', pill: 'obrigatório', success: true },
-              { t: 'Olhar estratégico: você entende que o criativo começa no hook e termina na conversão, não na estética.' },
-              { t: 'Capacidade de gerenciar prazos com seriedade — aqui volume e consistência são parte do trabalho.' },
-              { t: 'Atenção a detalhe e proatividade. Você não espera ser chamado para apontar um problema.' },
+              { t: 'Experiência comprovada com edição de reels, cortes e/ou vídeos para tráfego pago.', pill: 'obrigatório', success: true },
+              { t: 'Domínio avançado de ferramentas de edição de vídeo.', pill: 'obrigatório', success: true },
+              { t: 'Visão estratégica — entender que o criativo começa no hook e termina na conversão, não na estética.' },
+              { t: 'Maturidade para gerenciar prazos e cumprir entregas com consistência.' },
+              { t: 'Atenção a detalhes, criatividade apurada e proatividade.' },
+              { t: 'Ambição por resultado e disposição para crescer junto com a operação.' },
               { t: 'Motion design.', pill: 'diferencial' }
             ].map((r, i) => (
               <div className="row-item" key={i}>
@@ -587,14 +589,14 @@ function Landing() {
       <section className="section">
         <div className="container">
           <div className="section-head">
-            <p className="eyebrow">Processo seletivo</p>
+            <p className="eyebrow">Etapas do processo</p>
           </div>
           <div className="process-grid">
             {[
-              { t: 'Recebimento de candidaturas', d: 'Preencha o formulário com portfólio e pretensão salarial.' },
-              { t: 'Seleção', d: 'Analisamos os perfis que chegaram e avançamos os mais alinhados.' },
-              { t: 'Teste prático', d: 'Uma edição real para entender como você pensa e executa.' },
-              { t: 'Conversa com o time', d: 'Bate-papo direto com o responsável da área.' }
+              { t: 'Candidatura', d: 'Envie o formulário com portfólio e pretensão salarial.' },
+              { t: 'Triagem', d: 'Avaliamos os perfis recebidos e selecionamos os mais alinhados.' },
+              { t: 'Teste prático', d: 'Um exercício real de edição para avaliar raciocínio e execução.' },
+              { t: 'Conversa final', d: 'Papo direto com o responsável pelo setor.' }
             ].map((s, i) => (
               <div className="proc-card" key={i}>
                 <div className="proc-step">Etapa {String(i + 1).padStart(2, '0')}</div>
@@ -610,21 +612,20 @@ function Landing() {
         <div className="container">
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 32 }}>
             <span className="pill">100% remoto</span>
-            <span className="pill">Contratação PJ</span>
-            <span className="pill">Posição fixa</span>
+            <span className="pill">Pretensão salarial no formulário</span>
+            <span className="pill">Oportunidade real de crescimento</span>
           </div>
           <div className="cta-banner">
             <div>
-              <h2 className="headline">Pronto para aplicar?</h2>
+              <h2 className="headline">Quer fazer parte do time?</h2>
               <p className="body" style={{ color: 'var(--ink-subtle)', marginTop: 12 }}>
-                Inclua sua pretensão salarial no formulário. Portfólio é obrigatório.
+                Preencha o formulário com seus dados, portfólio e pretensão salarial. Candidaturas sem portfólio podem ser desconsideradas.
               </p>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-start' }}>
               <a href={ROUTES.FORM} className="btn btn-primary btn-lg" onClick={onApply}>
                 Preencher formulário <span className="arrow">→</span>
               </a>
-              <span className="caption">Candidaturas sem portfólio não serão consideradas.</span>
             </div>
           </div>
         </div>
