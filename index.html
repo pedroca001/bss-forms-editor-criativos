@@ -494,58 +494,46 @@ function Landing() {
         <div className="container">
           <p className="eyebrow hero-eyebrow">Editor de Criativo · Direct Response</p>
           <h1 className="display-xl hero-title">
-            Edite para o <span className="accent">clique.</span>
+            Você edita pensando no <span className="accent">clique,</span> não no like.
           </h1>
-          <div className="hero-grid">
-            <div>
-              <p className="body-lg" style={{ color: 'var(--ink-muted)', maxWidth: '56ch' }}>
-                Procuramos um editor fixo para construir criativos que performam de verdade — vídeos que travam o scroll e microleads que convertem. Posição de longo prazo numa operação enxuta, obcecada por dado.
-              </p>
-              <div className="hero-actions">
-                <a href={ROUTES.FORM} className="btn btn-primary btn-lg" onClick={onApply}>
-                  Preencher candidatura <span className="arrow">→</span>
-                </a>
-                <a href="#vaga" className="btn btn-secondary btn-lg">Ver detalhes</a>
-              </div>
-            </div>
-            <div className="meta-strip">
-              <div className="meta-cell">
-                <div className="meta-num">15</div>
-                <div className="meta-lbl">Perguntas no form</div>
-              </div>
-              <div className="meta-cell">
-                <div className="meta-num">~7<span style={{ fontSize: '14px', color: 'var(--ink-subtle)' }}>min</span></div>
-                <div className="meta-lbl">Tempo médio</div>
-              </div>
-              <div className="meta-cell">
-                <div className="meta-num">PJ</div>
-                <div className="meta-lbl">Contratação</div>
-              </div>
-              <div className="meta-cell">
-                <div className="meta-num"><span className="accent">Remoto</span></div>
-                <div className="meta-lbl">100%</div>
-              </div>
-            </div>
+          <p className="body-lg" style={{ color: 'var(--ink-muted)', maxWidth: '56ch' }}>
+            Buscamos um editor fixo para construir criativos que performam de verdade — vídeos que travam o scroll e microleads que convertem. Posição de longo prazo dentro de uma operação enxuta e movida a resultado.
+          </p>
+          <div className="hero-actions">
+            <a href={ROUTES.FORM} className="btn btn-primary btn-lg" onClick={onApply}>
+              Preencher candidatura <span className="arrow">→</span>
+            </a>
+            <a href="#vaga" className="btn btn-secondary btn-lg">Ver detalhes</a>
           </div>
         </div>
       </header>
 
       <section className="section" id="vaga">
         <div className="container">
+          <p className="body-lg" style={{ color: 'var(--ink-muted)', maxWidth: '64ch', marginBottom: 16 }}>
+            Na BSS Marketing, a gente opera no mercado de infoprodutos com foco em campanhas de direct response. Isso significa ciclos rápidos, muita iteração e total comprometimento com o que os números dizem.
+          </p>
+          <p className="body-lg" style={{ color: 'var(--ink-muted)', maxWidth: '64ch' }}>
+            Cultura aqui é feita de autonomia, velocidade e responsabilidade.
+          </p>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
           <div className="section-head">
-            <p className="eyebrow">01 — O que você produz</p>
-            <h2 className="display-md">Dois formatos. Um único objetivo: <span className="accent">mover número.</span></h2>
+            <p className="eyebrow">O que você vai produzir</p>
           </div>
           <div className="grid-2">
             <div className="feature-card">
               <p className="eyebrow">Formato 01</p>
               <h3>Criativos de Performance</h3>
-              <p>Vídeos construídos para parar o scroll — hook cirúrgico, timing de corte preciso e avatares que se conectam com o público em segundos.</p>
+              <p>Vídeos construídos para parar o scroll — com foco em hooks cirúrgicos, timing de corte e avatares que se conectam com o público.</p>
             </div>
             <div className="feature-card">
               <p className="eyebrow">Formato 02</p>
               <h3>Microleads</h3>
-              <p>Conteúdos curtos para capturar e qualificar leads dentro dos funis de venda. Objetivo claro, execução precisa, ciclo curto de iteração.</p>
+              <p>Conteúdos curtos voltados para captura e qualificação de leads dentro dos funis de venda. Objetivo claro, execução precisa.</p>
             </div>
           </div>
         </div>
@@ -554,14 +542,13 @@ function Landing() {
       <section className="section">
         <div className="container">
           <div className="section-head">
-            <p className="eyebrow">02 — Responsabilidades</p>
-            <h2 className="display-md">O que vai estar na sua mesa.</h2>
+            <p className="eyebrow">Responsabilidades</p>
           </div>
           <div className="row-list">
             {[
               'Editar criativos de alta performance, com domínio de ritmo, corte e storytelling visual alinhado ao direct response.',
               'Manter comunicação ativa com o time para garantir o fluxo de entrega e resolver impasses antes que virem problema.',
-              'Acompanhar o que está funcionando no mercado — tendências, formatos, abordagens — e trazer isso para dentro da edição.',
+              'Acompanhar o que está funcionando no mercado — tendências, formatos, abordagens — e trazer isso para a edição.',
               'Participar dos ciclos de teste e revisão, ajustando peças com base em dados reais de tráfego pago.'
             ].map((t, i) => (
               <div className="row-item" key={i}>
@@ -577,8 +564,7 @@ function Landing() {
       <section className="section">
         <div className="container">
           <div className="section-head">
-            <p className="eyebrow">03 — O que buscamos</p>
-            <h2 className="display-md">Perfil <span className="accent">não negociável</span> + diferenciais.</h2>
+            <p className="eyebrow">O que buscamos</p>
           </div>
           <div className="row-list">
             {[
@@ -586,7 +572,7 @@ function Landing() {
               { t: 'Olhar estratégico: você entende que o criativo começa no hook e termina na conversão, não na estética.' },
               { t: 'Capacidade de gerenciar prazos com seriedade — aqui volume e consistência são parte do trabalho.' },
               { t: 'Atenção a detalhe e proatividade. Você não espera ser chamado para apontar um problema.' },
-              { t: 'Motion design e domínio de ferramentas de IA aplicadas à edição.', pill: 'diferencial' }
+              { t: 'Motion design.', pill: 'diferencial' }
             ].map((r, i) => (
               <div className="row-item" key={i}>
                 <div className="row-num">→</div>
@@ -601,15 +587,14 @@ function Landing() {
       <section className="section">
         <div className="container">
           <div className="section-head">
-            <p className="eyebrow">04 — Processo seletivo</p>
-            <h2 className="display-md">Quatro etapas. Sem enrolação.</h2>
+            <p className="eyebrow">Processo seletivo</p>
           </div>
           <div className="process-grid">
             {[
-              { t: 'Candidatura', d: 'Você preenche o formulário com portfólio e pretensão salarial.' },
-              { t: 'Seleção', d: 'Analisamos os perfis recebidos e avançamos os mais alinhados.' },
+              { t: 'Recebimento de candidaturas', d: 'Preencha o formulário com portfólio e pretensão salarial.' },
+              { t: 'Seleção', d: 'Analisamos os perfis que chegaram e avançamos os mais alinhados.' },
               { t: 'Teste prático', d: 'Uma edição real para entender como você pensa e executa.' },
-              { t: 'Conversa', d: 'Bate-papo direto com o responsável da área.' }
+              { t: 'Conversa com o time', d: 'Bate-papo direto com o responsável da área.' }
             ].map((s, i) => (
               <div className="proc-card" key={i}>
                 <div className="proc-step">Etapa {String(i + 1).padStart(2, '0')}</div>
@@ -623,17 +608,24 @@ function Landing() {
 
       <section className="section">
         <div className="container">
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 32 }}>
+            <span className="pill">100% remoto</span>
+            <span className="pill">Contratação PJ</span>
+            <span className="pill">Posição fixa</span>
+          </div>
           <div className="cta-banner">
             <div>
-              <p className="eyebrow" style={{ color: 'var(--primary)', marginBottom: 12 }}>Próximo passo</p>
-              <h2 className="headline">Você se reconheceu? Aplique agora.</h2>
+              <h2 className="headline">Pronto para aplicar?</h2>
               <p className="body" style={{ color: 'var(--ink-subtle)', marginTop: 12 }}>
-                15 perguntas curtas, uma de cada vez. Inclua sua pretensão salarial e o link do portfólio.
+                Inclua sua pretensão salarial no formulário. Portfólio é obrigatório.
               </p>
             </div>
-            <a href={ROUTES.FORM} className="btn btn-primary btn-lg" onClick={onApply}>
-              Preencher candidatura <span className="arrow">→</span>
-            </a>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-start' }}>
+              <a href={ROUTES.FORM} className="btn btn-primary btn-lg" onClick={onApply}>
+                Preencher formulário <span className="arrow">→</span>
+              </a>
+              <span className="caption">Candidaturas sem portfólio não serão consideradas.</span>
+            </div>
           </div>
         </div>
       </section>
