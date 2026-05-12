@@ -32,70 +32,286 @@
   #root { min-height: 100vh; }
   .container { max-width: 740px; margin: 0 auto; padding: 0 24px; }
 
-  /* ===== LANDING ===== */
-  header { border-bottom: 1px solid var(--border); padding: 28px 0; }
-  header .container { display: flex; align-items: center; justify-content: space-between; }
-  .logo { font-size: 13px; font-family: 'DM Mono', monospace; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
-  .badge {
-    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(255,106,0,0.25);
-    border-radius: 4px; padding: 4px 10px;
+  /* ===== LANDING (redesigned) ===== */
+  .lp-wrap { position: relative; overflow: hidden; }
+  .lp-wrap::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(255,106,0,0.10), transparent 45%),
+      radial-gradient(circle at 90% 80%, rgba(255,106,0,0.06), transparent 50%);
+    pointer-events: none; z-index: 0;
+  }
+  .lp-wrap::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 56px 56px;
+    pointer-events: none; z-index: 0;
+    mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+  }
+  .lp-wrap > * { position: relative; z-index: 1; }
+
+  .lp-container { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+  @media (max-width: 640px) { .lp-container { padding: 0 20px; } }
+
+  /* HEADER */
+  .nav { padding: 24px 0; }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+  .brand-mark { display: flex; align-items: center; gap: 10px; }
+  .brand-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(255,106,0,0.15), 0 0 20px rgba(255,106,0,0.5);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 0 4px rgba(255,106,0,0.15), 0 0 14px rgba(255,106,0,0.4); }
+    50%     { box-shadow: 0 0 0 6px rgba(255,106,0,0.08), 0 0 24px rgba(255,106,0,0.7); }
+  }
+  .brand-name { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text); }
+  .nav-status {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted);
+    letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .nav-status::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: #4ade80; box-shadow: 0 0 8px rgba(74,222,128,0.6);
   }
 
-  .hero { padding: 72px 0 56px; border-bottom: 1px solid var(--border); }
-  .hero-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
-  .hero h1 { font-size: clamp(36px, 6vw, 56px); font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 24px; }
-  .hero h1 em { font-style: normal; color: var(--accent); }
-  .hero-sub { font-size: 17px; color: var(--muted); line-height: 1.65; max-width: 560px; }
-
-  .intro { padding: 56px 0; border-bottom: 1px solid var(--border); }
-  .intro p { font-size: 16px; color: rgba(240,237,232,0.72); line-height: 1.75; margin-bottom: 16px; }
-  .intro p:last-child { margin-bottom: 0; }
-
-  section { padding: 48px 0; border-bottom: 1px solid var(--border); }
-  .section-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 28px; }
-
-  .item-list { list-style: none; display: flex; flex-direction: column; }
-  .item-list li { display: flex; gap: 16px; padding: 16px 0; border-top: 1px solid var(--border); align-items: flex-start; }
-  .item-list li:last-child { border-bottom: 1px solid var(--border); }
-  .item-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); min-width: 20px; padding-top: 2px; }
-  .item-text { font-size: 15px; color: rgba(240,237,232,0.82); line-height: 1.6; }
-  .item-tag {
-    display: inline-block; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent);
-    background: var(--accent-dim); border-radius: 3px; padding: 2px 7px; margin-left: 8px;
-    vertical-align: middle; letter-spacing: 0.08em; text-transform: uppercase;
+  /* HERO */
+  .hero { padding: 72px 0 96px; }
+  .hero-meta {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 36px;
+  }
+  .hero-meta-divider { width: 24px; height: 1px; background: var(--accent); }
+  .hero-meta-accent { color: var(--accent); }
+  .hero-title {
+    font-size: clamp(44px, 8vw, 96px);
+    font-weight: 800; line-height: 0.98; letter-spacing: -0.035em;
+    margin-bottom: 36px; max-width: 12ch;
+  }
+  .hero-title .accent { color: var(--accent); font-style: italic; font-weight: 800; }
+  .hero-title .strike { position: relative; display: inline-block; color: var(--muted); }
+  .hero-title .strike::after {
+    content: ''; position: absolute; left: -2%; right: -2%; top: 52%; height: 5px;
+    background: var(--accent); transform: rotate(-3deg); border-radius: 2px;
+  }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.4fr 1fr; gap: 64px;
+    align-items: end; margin-top: 40px;
+  }
+  .hero-sub { font-size: 18px; color: rgba(240,237,232,0.72); line-height: 1.6; max-width: 52ch; }
+  .hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .hero-stat-num {
+    font-size: 40px; font-weight: 800; color: var(--accent);
+    letter-spacing: -0.03em; line-height: 1;
+  }
+  .hero-stat-lbl {
+    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted);
+    letter-spacing: 0.1em; text-transform: uppercase; margin-top: 8px;
+  }
+  @media (max-width: 800px) {
+    .hero { padding: 48px 0 64px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .hero-stat-num { font-size: 30px; }
   }
 
-  .format-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
-  .format-card { background: var(--surface); border: 1px solid var(--border-strong); border-radius: 8px; padding: 24px 20px; }
-  .format-card .fc-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
-  .format-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; }
-  .format-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  /* MARQUEE */
+  .marquee {
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    padding: 22px 0; overflow: hidden; margin: 0;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+  .marquee-track {
+    display: flex; gap: 64px; white-space: nowrap;
+    animation: scroll 40s linear infinite;
+    font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700;
+    color: rgba(240,237,232,0.55); letter-spacing: -0.01em;
+  }
+  .marquee-track span { display: inline-flex; align-items: center; gap: 64px; }
+  .marquee-track .dot { color: var(--accent); }
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
 
-  .process-steps { display: flex; flex-direction: column; position: relative; }
-  .process-steps::before { content: ''; position: absolute; left: 15px; top: 32px; bottom: 32px; width: 1px; background: var(--border-strong); }
-  .step { display: flex; gap: 20px; align-items: flex-start; padding: 12px 0; }
-  .step-dot {
-    width: 31px; height: 31px; border-radius: 50%;
-    border: 1px solid var(--border-strong); background: var(--bg);
-    display: flex; align-items: center; justify-content: center;
+  /* SECTION HEADER */
+  .lp-section { padding: 96px 0; }
+  .sec-head {
+    display: grid; grid-template-columns: 200px 1fr; gap: 32px;
+    margin-bottom: 56px; align-items: baseline;
+  }
+  .sec-tag {
     font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent);
-    flex-shrink: 0; position: relative; z-index: 1;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 10px;
   }
-  .step-content { padding-top: 4px; }
-  .step-content strong { display: block; font-size: 15px; font-weight: 700; margin-bottom: 2px; }
-  .step-content span { font-size: 13px; color: var(--muted); }
+  .sec-tag-num {
+    background: var(--accent-dim);
+    border: 1px solid rgba(255,106,0,0.3);
+    border-radius: 3px; padding: 3px 8px; color: var(--accent);
+  }
+  .sec-title {
+    font-size: clamp(28px, 4vw, 44px); font-weight: 800;
+    line-height: 1.05; letter-spacing: -0.02em; max-width: 18ch;
+  }
+  .sec-title .accent { color: var(--accent); }
+  @media (max-width: 720px) {
+    .lp-section { padding: 64px 0; }
+    .sec-head { grid-template-columns: 1fr; gap: 12px; margin-bottom: 36px; }
+  }
 
-  .cta-section { padding: 56px 0 80px; border-bottom: none; }
-  .info-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
-  .info-pill {
-    display: flex; align-items: center; gap: 8px;
-    font-family: 'DM Mono', monospace; font-size: 12px; color: rgba(240,237,232,0.65);
-    background: var(--surface); border: 1px solid var(--border-strong);
-    border-radius: 6px; padding: 8px 14px; letter-spacing: 0.04em;
+  /* PRODUCE CARDS */
+  .produce-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .produce-card {
+    position: relative;
+    background: linear-gradient(160deg, #161616 0%, #0e0e0e 100%);
+    border: 1px solid var(--border-strong);
+    border-radius: 14px; padding: 32px 28px;
+    transition: border-color .25s, transform .25s;
+    overflow: hidden;
   }
-  .cta-title { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 10px; }
-  .cta-sub { font-size: 14px; color: var(--muted); margin-bottom: 32px; }
+  .produce-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at top right, rgba(255,106,0,0.08), transparent 60%);
+    opacity: 0; transition: opacity .3s;
+  }
+  .produce-card:hover { border-color: rgba(255,106,0,0.3); transform: translateY(-3px); }
+  .produce-card:hover::before { opacity: 1; }
+  .produce-card > * { position: relative; }
+  .produce-num {
+    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent);
+    letter-spacing: 0.14em; margin-bottom: 24px;
+  }
+  .produce-card h3 {
+    font-size: 26px; font-weight: 800; letter-spacing: -0.02em;
+    margin-bottom: 14px; line-height: 1.1;
+  }
+  .produce-card p { color: var(--muted); font-size: 15px; line-height: 1.65; }
+  @media (max-width: 720px) { .produce-grid { grid-template-columns: 1fr; } }
+
+  /* RESPONSIBILITIES / REQUIREMENTS */
+  .rich-list { display: grid; grid-template-columns: 1fr; gap: 0; }
+  .rich-item {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    gap: 24px; align-items: start;
+    padding: 28px 4px;
+    border-top: 1px solid var(--border);
+    transition: background .2s, padding .2s;
+  }
+  .rich-item:last-child { border-bottom: 1px solid var(--border); }
+  .rich-item:hover { background: rgba(255,106,0,0.025); padding-left: 12px; }
+  .rich-num {
+    font-family: 'DM Mono', monospace; font-size: 13px; color: var(--accent);
+    letter-spacing: 0.06em; padding-top: 4px;
+  }
+  .rich-text { font-size: 17px; line-height: 1.55; color: rgba(240,237,232,0.92); letter-spacing: -0.005em; }
+  .rich-pill {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    background: var(--accent-dim); color: var(--accent);
+    border: 1px solid rgba(255,106,0,0.25);
+    border-radius: 999px; padding: 4px 10px; white-space: nowrap;
+    margin-top: 4px;
+  }
+  .rich-pill.muted { background: rgba(255,255,255,0.04); color: var(--muted); border-color: var(--border-strong); }
+  @media (max-width: 640px) {
+    .rich-item { grid-template-columns: 40px 1fr; padding: 22px 4px; gap: 16px; }
+    .rich-pill { grid-column: 2; justify-self: start; }
+    .rich-text { font-size: 15.5px; }
+  }
+
+  /* PROCESS */
+  .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .proc-card {
+    background: #111; border: 1px solid var(--border-strong);
+    border-radius: 12px; padding: 28px 22px;
+    display: flex; flex-direction: column; gap: 16px;
+    min-height: 200px; position: relative;
+  }
+  .proc-card-num {
+    font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent);
+    letter-spacing: 0.1em; display: flex; align-items: center; gap: 8px;
+  }
+  .proc-card-num::before {
+    content: ''; width: 28px; height: 1px; background: var(--accent);
+  }
+  .proc-card h4 { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; }
+  .proc-card p { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin-top: auto; }
+  @media (max-width: 880px) { .process-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 480px) { .process-grid { grid-template-columns: 1fr; } }
+
+  /* CTA */
+  .lp-cta {
+    margin: 0 0 80px; position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #161616 0%, #0a0a0a 100%);
+    border: 1px solid var(--border-strong);
+    border-radius: 20px; padding: 64px 56px;
+  }
+  .lp-cta::before {
+    content: ''; position: absolute; top: -50%; right: -10%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(255,106,0,0.18), transparent 65%);
+    pointer-events: none;
+  }
+  .lp-cta-inner { position: relative; display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: center; }
+  .lp-cta-tag {
+    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent);
+    letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 18px;
+  }
+  .lp-cta-title {
+    font-size: clamp(30px, 4.4vw, 48px); font-weight: 800;
+    line-height: 1.05; letter-spacing: -0.025em; margin-bottom: 16px;
+  }
+  .lp-cta-title .accent { color: var(--accent); font-style: italic; }
+  .lp-cta-sub { font-size: 16px; color: var(--muted); line-height: 1.6; max-width: 44ch; }
+  .lp-cta-meta { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+  .lp-pill-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .lp-pill {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: rgba(240,237,232,0.8); letter-spacing: 0.08em;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border-strong);
+    border-radius: 999px; padding: 6px 14px;
+  }
+  .lp-cta-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: var(--accent); color: #0b0b0b;
+    font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700;
+    border: none; cursor: pointer; text-decoration: none;
+    border-radius: 8px; padding: 18px 32px;
+    transition: background .15s, transform .15s, box-shadow .2s;
+    box-shadow: 0 12px 30px -10px rgba(255,106,0,0.5);
+  }
+  .lp-cta-btn:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 18px 40px -10px rgba(255,106,0,0.65); }
+  .lp-cta-btn .arrow { font-size: 20px; transition: transform .2s; }
+  .lp-cta-btn:hover .arrow { transform: translateX(4px); }
+  .lp-cta-note { margin-top: 14px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.06em; }
+  @media (max-width: 880px) {
+    .lp-cta { padding: 40px 28px; }
+    .lp-cta-inner { grid-template-columns: 1fr; gap: 32px; }
+    .lp-cta-meta { align-items: flex-start; }
+  }
+
+  /* FOOTER */
+  .lp-footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0 48px;
+  }
+  .lp-footer-inner {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase;
+  }
 
   .cta-btn {
     display: inline-flex; align-items: center; gap: 10px;
@@ -307,104 +523,224 @@ function navigate(path) {
 // ===== LANDING =====
 function Landing() {
   const onApply = (e) => { e.preventDefault(); navigate(ROUTES.FORM); };
+  const marqueeItems = ['Direct Response', 'Performance', 'Hook · Corte · Conversão', 'Mídia Paga', 'Vídeo que vende', 'Tempo de tela', 'Microleads', 'Iteração rápida'];
+  const marqueeRow = (
+    <span>
+      {marqueeItems.map((t, i) => (
+        <React.Fragment key={i}>{t}<span className="dot"> ✦ </span></React.Fragment>
+      ))}
+    </span>
+  );
+
   return (
-    <React.Fragment>
-      <header>
-        <div className="container">
-          <span className="logo">BSS Marketing</span>
-          <span className="badge">Vaga aberta</span>
+    <div className="lp-wrap">
+      <nav className="nav">
+        <div className="lp-container nav-inner">
+          <div className="brand-mark">
+            <span className="brand-dot"></span>
+            <span className="brand-name">BSS Marketing</span>
+          </div>
+          <span className="nav-status">Vaga aberta · Editor de Criativo</span>
+        </div>
+      </nav>
+
+      <header className="hero">
+        <div className="lp-container">
+          <div className="hero-meta">
+            <span>Posição 01 / 2026</span>
+            <span className="hero-meta-divider"></span>
+            <span className="hero-meta-accent">Direct Response</span>
+            <span className="hero-meta-divider"></span>
+            <span>100% Remoto</span>
+          </div>
+
+          <h1 className="hero-title">
+            Edite pra <span className="strike">curtida</span> <span className="accent">clique.</span>
+          </h1>
+
+          <div className="hero-grid">
+            <p className="hero-sub">
+              Procuramos um editor fixo pra construir criativos que performam de verdade — vídeos que travam o scroll e microleads que convertem. Posição de longo prazo numa operação enxuta, obcecada por dado e movida a resultado.
+            </p>
+            <div className="hero-stats">
+              <div>
+                <div className="hero-stat-num">15</div>
+                <div className="hero-stat-lbl">Perguntas no form</div>
+              </div>
+              <div>
+                <div className="hero-stat-num">~7min</div>
+                <div className="hero-stat-lbl">Pra se candidatar</div>
+              </div>
+              <div>
+                <div className="hero-stat-num">PJ</div>
+                <div className="hero-stat-lbl">Contratação fixa</div>
+              </div>
+              <div>
+                <div className="hero-stat-num">∞</div>
+                <div className="hero-stat-lbl">Volume de testes</div>
+              </div>
+            </div>
+          </div>
         </div>
       </header>
 
-      <main>
-        <div className="hero">
-          <div className="container">
-            <p className="hero-label">Editor de Criativo · Direct Response</p>
-            <h1>Você edita pensando<br/>no <em>clique,</em> não no like.</h1>
-            <p className="hero-sub">Buscamos um editor fixo para construir criativos que performam de verdade — vídeos que travam o scroll e microleads que convertem. Posição de longo prazo dentro de uma operação enxuta e movida a resultado.</p>
+      <div className="marquee">
+        <div className="marquee-track">
+          {marqueeRow}
+          {marqueeRow}
+        </div>
+      </div>
+
+      <section className="lp-section">
+        <div className="lp-container">
+          <div className="sec-head">
+            <div className="sec-tag"><span className="sec-tag-num">01</span> O que você produz</div>
+            <h2 className="sec-title">Dois formatos. <span className="accent">Um único objetivo:</span> mover número.</h2>
+          </div>
+          <div className="produce-grid">
+            <div className="produce-card">
+              <div className="produce-num">FORMATO 01</div>
+              <h3>Criativos de Performance</h3>
+              <p>Vídeos construídos para parar o scroll — hook cirúrgico, timing de corte preciso e avatares que se conectam com o público em segundos.</p>
+            </div>
+            <div className="produce-card">
+              <div className="produce-num">FORMATO 02</div>
+              <h3>Microleads</h3>
+              <p>Conteúdos curtos para capturar e qualificar leads dentro dos funis de venda. Objetivo claro, execução precisa, ciclo curto de iteração.</p>
+            </div>
           </div>
         </div>
+      </section>
 
-        <div className="intro">
-          <div className="container">
-            <p>Na BSS Marketing, a gente opera no mercado de infoprodutos com foco em campanhas de direct response. Isso significa ciclos rápidos, muita iteração e total comprometimento com o que os números dizem.</p>
-            <p>Cultura aqui é feita de autonomia, velocidade e responsabilidade.</p>
+      <section className="lp-section" style={{ paddingTop: 0 }}>
+        <div className="lp-container">
+          <div className="sec-head">
+            <div className="sec-tag"><span className="sec-tag-num">02</span> Responsabilidades</div>
+            <h2 className="sec-title">O que <span className="accent">vai estar</span> na sua mesa.</h2>
+          </div>
+          <div className="rich-list">
+            <div className="rich-item">
+              <div className="rich-num">01</div>
+              <div className="rich-text">Editar criativos de alta performance, com domínio de ritmo, corte e storytelling visual alinhado ao direct response.</div>
+              <div></div>
+            </div>
+            <div className="rich-item">
+              <div className="rich-num">02</div>
+              <div className="rich-text">Manter comunicação ativa com o time para garantir o fluxo de entrega e resolver impasses antes que virem problema.</div>
+              <div></div>
+            </div>
+            <div className="rich-item">
+              <div className="rich-num">03</div>
+              <div className="rich-text">Acompanhar o que está funcionando no mercado — tendências, formatos, abordagens — e trazer isso pra dentro da edição.</div>
+              <div></div>
+            </div>
+            <div className="rich-item">
+              <div className="rich-num">04</div>
+              <div className="rich-text">Participar dos ciclos de teste e revisão, ajustando peças com base em dados reais de tráfego pago.</div>
+              <div></div>
+            </div>
           </div>
         </div>
+      </section>
 
-        <section>
-          <div className="container">
-            <p className="section-label">O que você vai produzir</p>
-            <div className="format-grid">
-              <div className="format-card">
-                <p className="fc-tag">Formato 01</p>
-                <h3>Criativos de Performance</h3>
-                <p>Vídeos construídos para parar o scroll — com foco em hooks cirúrgicos, timing de corte e avatares que se conectam com o público.</p>
+      <section className="lp-section" style={{ paddingTop: 0 }}>
+        <div className="lp-container">
+          <div className="sec-head">
+            <div className="sec-tag"><span className="sec-tag-num">03</span> O que buscamos</div>
+            <h2 className="sec-title">Perfil <span className="accent">não negociável</span> + diferenciais.</h2>
+          </div>
+          <div className="rich-list">
+            <div className="rich-item">
+              <div className="rich-num">→</div>
+              <div className="rich-text">Portfólio com criativos de performance comprovados — reels, cortes e vídeos para mídia paga.</div>
+              <div className="rich-pill">obrigatório</div>
+            </div>
+            <div className="rich-item">
+              <div className="rich-num">→</div>
+              <div className="rich-text">Olhar estratégico: você entende que o criativo começa no hook e termina na conversão, não na estética.</div>
+              <div></div>
+            </div>
+            <div className="rich-item">
+              <div className="rich-num">→</div>
+              <div className="rich-text">Capacidade de gerenciar prazos com seriedade — aqui volume e consistência são parte do trabalho.</div>
+              <div></div>
+            </div>
+            <div className="rich-item">
+              <div className="rich-num">→</div>
+              <div className="rich-text">Atenção a detalhe e proatividade. Você não espera ser chamado pra apontar um problema.</div>
+              <div></div>
+            </div>
+            <div className="rich-item">
+              <div className="rich-num">→</div>
+              <div className="rich-text">Motion design e domínio de ferramentas de IA aplicadas à edição.</div>
+              <div className="rich-pill muted">diferencial</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="lp-section" style={{ paddingTop: 0 }}>
+        <div className="lp-container">
+          <div className="sec-head">
+            <div className="sec-tag"><span className="sec-tag-num">04</span> Processo seletivo</div>
+            <h2 className="sec-title">Quatro etapas. <span className="accent">Sem enrolação.</span></h2>
+          </div>
+          <div className="process-grid">
+            <div className="proc-card">
+              <div className="proc-card-num">Etapa 01</div>
+              <h4>Candidatura</h4>
+              <p>Você preenche o formulário com portfólio e pretensão salarial.</p>
+            </div>
+            <div className="proc-card">
+              <div className="proc-card-num">Etapa 02</div>
+              <h4>Seleção</h4>
+              <p>Analisamos os perfis que chegaram e avançamos os mais alinhados.</p>
+            </div>
+            <div className="proc-card">
+              <div className="proc-card-num">Etapa 03</div>
+              <h4>Teste prático</h4>
+              <p>Uma edição real pra entender como você pensa e executa.</p>
+            </div>
+            <div className="proc-card">
+              <div className="proc-card-num">Etapa 04</div>
+              <h4>Conversa</h4>
+              <p>Bate-papo direto com o responsável da área.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="lp-container">
+        <div className="lp-cta">
+          <div className="lp-cta-inner">
+            <div>
+              <div className="lp-cta-tag">→ Próximo passo</div>
+              <h2 className="lp-cta-title">Você se reconheceu? <br/><span className="accent">Aplique agora.</span></h2>
+              <p className="lp-cta-sub">15 perguntas curtas, uma de cada vez. Inclua sua pretensão salarial e o link do portfólio. Sem portfólio, sua candidatura não será considerada.</p>
+            </div>
+            <div className="lp-cta-meta">
+              <div className="lp-pill-row">
+                <span className="lp-pill">100% remoto</span>
+                <span className="lp-pill">Contratação PJ</span>
+                <span className="lp-pill">Posição fixa</span>
               </div>
-              <div className="format-card">
-                <p className="fc-tag">Formato 02</p>
-                <h3>Microleads</h3>
-                <p>Conteúdos curtos voltados para captura e qualificação de leads dentro dos funis de venda. Objetivo claro, execução precisa.</p>
-              </div>
+              <a href={ROUTES.FORM} className="lp-cta-btn" onClick={onApply}>
+                Preencher formulário
+                <span className="arrow">→</span>
+              </a>
+              <p className="lp-cta-note">Leva ~7min · Enter para avançar</p>
             </div>
-          </div>
-        </section>
-
-        <section>
-          <div className="container">
-            <p className="section-label">Responsabilidades</p>
-            <ul className="item-list">
-              <li><span className="item-num">01</span><span className="item-text">Editar criativos de alta performance, com domínio de ritmo, corte e storytelling visual alinhado ao direct response.</span></li>
-              <li><span className="item-num">02</span><span className="item-text">Manter comunicação ativa com o time para garantir o fluxo de entrega e resolver impasses antes que virem problema.</span></li>
-              <li><span className="item-num">03</span><span className="item-text">Acompanhar o que está funcionando no mercado — tendências, formatos, abordagens — e trazer isso para a edição.</span></li>
-              <li><span className="item-num">04</span><span className="item-text">Participar dos ciclos de teste e revisão, ajustando peças com base em dados reais de tráfego pago.</span></li>
-            </ul>
-          </div>
-        </section>
-
-        <section>
-          <div className="container">
-            <p className="section-label">O que buscamos</p>
-            <ul className="item-list">
-              <li><span className="item-num">→</span><span className="item-text">Portfólio com criativos de performance comprovados — reels, cortes e vídeos para mídia paga.<span className="item-tag">obrigatório</span></span></li>
-              <li><span className="item-num">→</span><span className="item-text">Olhar estratégico: você entende que o criativo começa no hook e termina na conversão, não na estética.</span></li>
-              <li><span className="item-num">→</span><span className="item-text">Capacidade de gerenciar prazos com seriedade — aqui volume e consistência são parte do trabalho.</span></li>
-              <li><span className="item-num">→</span><span className="item-text">Atenção a detalhe e proatividade. Você não espera ser chamado para apontar um problema.</span></li>
-              <li><span className="item-num">→</span><span className="item-text">Motion design.<span className="item-tag">diferencial</span></span></li>
-            </ul>
-          </div>
-        </section>
-
-        <section>
-          <div className="container">
-            <p className="section-label">Processo seletivo</p>
-            <div className="process-steps">
-              <div className="step"><div className="step-dot">1</div><div className="step-content"><strong>Recebimento de candidaturas</strong><span>Preencha o formulário com portfólio e pretensão salarial.</span></div></div>
-              <div className="step"><div className="step-dot">2</div><div className="step-content"><strong>Seleção</strong><span>Analisamos os perfis que chegaram e avançamos os mais alinhados.</span></div></div>
-              <div className="step"><div className="step-dot">3</div><div className="step-content"><strong>Teste prático</strong><span>Uma edição real para entender como você pensa e executa.</span></div></div>
-              <div className="step"><div className="step-dot">4</div><div className="step-content"><strong>Conversa com o time</strong><span>Bate-papo direto com o responsável da área.</span></div></div>
-            </div>
-          </div>
-        </section>
-
-        <div className="cta-section">
-          <div className="container">
-            <div className="info-bar">
-              <div className="info-pill">100% remoto</div>
-              <div className="info-pill">Contratação PJ</div>
-              <div className="info-pill">Posição fixa</div>
-            </div>
-            <p className="cta-title">Pronto para aplicar?</p>
-            <p className="cta-sub">Inclua sua pretensão salarial no formulário. Portfólio é obrigatório.</p>
-            <a href={ROUTES.FORM} className="cta-btn" onClick={onApply}>
-              Preencher formulário
-              <span className="cta-arrow">→</span>
-            </a>
-            <p className="cta-note">Candidaturas sem portfólio não serão consideradas.</p>
           </div>
         </div>
-      </main>
-    </React.Fragment>
+      </div>
+
+      <footer className="lp-footer">
+        <div className="lp-container lp-footer-inner">
+          <span>© BSS Performance Marketing</span>
+          <span>Vaga · Editor de Criativo</span>
+        </div>
+      </footer>
+    </div>
   );
 }
 
