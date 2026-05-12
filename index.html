@@ -497,10 +497,7 @@ function Landing() {
             Editor de <span className="accent">Criativos</span>
           </h1>
           <p className="body-lg" style={{ color: 'var(--ink-muted)', maxWidth: '60ch' }}>
-            A BSS Performance Marketing opera com campanhas de direct response no mercado de nutra nos Estados Unidos. Aqui, cada criativo é tratado como uma alavanca de resultado — e a pessoa que edita é parte central dessa engrenagem.
-          </p>
-          <p className="body" style={{ color: 'var(--ink-subtle)', maxWidth: '60ch', marginTop: 12 }}>
-            Acreditamos que alinhamento de cultura importa tanto quanto habilidade técnica. Antes de se candidatar, <a href="#" className="accent" style={{ borderBottom: '1px solid rgba(94,106,210,0.4)' }}>conheça mais sobre quem somos</a>.
+            A BSS Performance Marketing opera com campanhas de direct response no mercado de infoprodutos, vendendo globalmente em inglês, português, francês, italiano e alemão. Aqui, cada criativo é tratado como alavanca de resultado — e quem edita é parte central dessa engrenagem.
           </p>
           <div className="hero-actions">
             <a href={ROUTES.FORM} className="btn btn-primary btn-lg" onClick={onApply}>
@@ -555,7 +552,7 @@ function Landing() {
             <div className="feature-card">
               <p className="eyebrow">Formato 02</p>
               <h3>Microleads</h3>
-              <p>Conteúdos curtos pensados para captação e qualificação dentro de funis de venda. Clareza de objetivo e execução enxuta.</p>
+              <p>Os primeiros 2 a 4 minutos de uma VSL, com edição dopaminérgica e dinâmica — feitos para prender atenção e qualificar o lead antes da oferta.</p>
             </div>
           </div>
         </div>
@@ -588,28 +585,6 @@ function Landing() {
 
       <section className="section">
         <div className="container">
-          <div className="section-head">
-            <p className="eyebrow">Etapas do processo</p>
-          </div>
-          <div className="process-grid">
-            {[
-              { t: 'Candidatura', d: 'Envie o formulário com portfólio e pretensão salarial.' },
-              { t: 'Triagem', d: 'Avaliamos os perfis recebidos e selecionamos os mais alinhados.' },
-              { t: 'Teste prático', d: 'Um exercício real de edição para avaliar raciocínio e execução.' },
-              { t: 'Conversa final', d: 'Papo direto com o responsável pelo setor.' }
-            ].map((s, i) => (
-              <div className="proc-card" key={i}>
-                <div className="proc-step">Etapa {String(i + 1).padStart(2, '0')}</div>
-                <h4>{s.t}</h4>
-                <p>{s.d}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 32 }}>
             <span className="pill">100% remoto</span>
             <span className="pill">Pretensão salarial no formulário</span>
@@ -617,9 +592,9 @@ function Landing() {
           </div>
           <div className="cta-banner">
             <div>
-              <h2 className="headline">Quer fazer parte do time?</h2>
+              <h2 className="headline">Se candidatar é simples.</h2>
               <p className="body" style={{ color: 'var(--ink-subtle)', marginTop: 12 }}>
-                Preencha o formulário com seus dados, portfólio e pretensão salarial. Candidaturas sem portfólio podem ser desconsideradas.
+                Preencha o formulário com seus dados, portfólio e pretensão salarial. Após o envio, nossa equipe analisa os perfis e entra em contato com os candidatos selecionados.
               </p>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-start' }}>
