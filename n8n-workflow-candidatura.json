@@ -61,6 +61,15 @@
       "parameters": {
         "method": "POST",
         "url": "https://api.telegram.org/bot8771377909:AAEFG_egqXoFOM6Vc8cpnCRmFWbwqTNbgNQ/sendMessage",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            }
+          ]
+        },
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={\n  \"chat_id\": -5233253304,\n  \"text\": {{ JSON.stringify($json.tg_text) }},\n  \"parse_mode\": \"HTML\",\n  \"disable_web_page_preview\": true\n}",
@@ -98,7 +107,6 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "data_envio": "={{ $json.data_envio }}",
             "nome_completo": "={{ $json.nome_completo }}",
             "cpf": "={{ $json.cpf }}",
             "idade": "={{ $json.idade }}",
@@ -117,7 +125,6 @@
           },
           "matchingColumns": [],
           "schema": [
-            { "id": "data_envio",                "displayName": "data_envio",                "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
             { "id": "nome_completo",             "displayName": "nome_completo",             "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
             { "id": "cpf",                       "displayName": "cpf",                       "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
             { "id": "idade",                     "displayName": "idade",                     "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
