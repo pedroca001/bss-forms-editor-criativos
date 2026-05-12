@@ -49,35 +49,34 @@
     },
     {
       "parameters": {
-        "jsCode": "function esc(v) {\n  if (v === null || v === undefined) return '';\n  return String(v)\n    .replace(/&/g, '&amp;')\n    .replace(/</g, '&lt;')\n    .replace(/>/g, '&gt;');\n}\nreturn $input.all().map(item => {\n  const b = item.json;\n  const out = {};\n  for (const k of Object.keys(b)) {\n    out[k] = b[k];\n    out['tg_' + k] = esc(b[k]);\n  }\n  return { json: out };\n});"
+        "jsCode": "function esc(v) {\n  if (v === null || v === undefined) return '';\n  return String(v)\n    .replace(/&/g, '&amp;')\n    .replace(/</g, '&lt;')\n    .replace(/>/g, '&gt;');\n}\n\nreturn $input.all().map(item => {\n  const b = item.json;\n  const portfolio = b.portfolio && b.portfolio.trim() ? esc(b.portfolio) : 'Não informado';\n\n  const text = `🟢 <b>Nova candidatura — Editor de Criativos</b>\\n<i>${esc(b.data_envio)}</i>\\n\\n👤 <b>Nome:</b> ${esc(b.nome_completo)}\\n🪪 <b>CPF:</b> ${esc(b.cpf)}\\n🎂 <b>Idade:</b> ${esc(b.idade)}\\n📧 <b>E-mail:</b> ${esc(b.email)}\\n📱 <b>Celular:</b> ${esc(b.celular)}\\n💰 <b>Pretensão:</b> R$ ${esc(b.expectativa_remuneracao)}\\n🌐 <b>Inglês:</b> ${esc(b.nivel_ingles)}\\n🎬 <b>Experiência:</b> ${esc(b.nivel_experiencia)}\\n📹 <b>Tipos de vídeo:</b> ${esc(b.tipos_video)}\\n🛠 <b>Softwares:</b> ${esc(b.softwares_edicao)}\\n🤖 <b>IAs que usa:</b> ${esc(b.inteligencias_artificiais)}\\n📚 <b>Cursos:</b> ${esc(b.cursos_mentorias)}\\n🔗 <b>Portfólio:</b> ${portfolio}\\n📸 <b>Instagram:</b> ${esc(b.instagram)}\\n📣 <b>Como soube:</b> ${esc(b.origem_vaga)}`;\n\n  return {\n    json: {\n      ...b,\n      tg_text: text\n    }\n  };\n});"
       },
-      "id": "node-escape",
-      "name": "Escape HTML",
+      "id": "node-build-text",
+      "name": "Montar texto Telegram",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [560, 360]
+      "position": [560, 240]
     },
     {
       "parameters": {
-        "chatId": "-5233253304",
-        "text": "=🟢 <b>Nova candidatura — Editor de Criativos</b>\n<i>{{ $json.data_envio }}</i>\n\n👤 <b>Nome:</b> {{ $json.tg_nome_completo }}\n🪪 <b>CPF:</b> {{ $json.tg_cpf }}\n🎂 <b>Idade:</b> {{ $json.tg_idade }}\n📧 <b>E-mail:</b> {{ $json.tg_email }}\n📱 <b>Celular:</b> {{ $json.tg_celular }}\n💰 <b>Pretensão:</b> R$ {{ $json.tg_expectativa_remuneracao }}\n🌐 <b>Inglês:</b> {{ $json.tg_nivel_ingles }}\n🎬 <b>Experiência:</b> {{ $json.tg_nivel_experiencia }}\n📹 <b>Tipos de vídeo:</b> {{ $json.tg_tipos_video }}\n🛠 <b>Softwares:</b> {{ $json.tg_softwares_edicao }}\n🤖 <b>IAs que usa:</b> {{ $json.tg_inteligencias_artificiais }}\n📚 <b>Cursos:</b> {{ $json.tg_cursos_mentorias }}\n🔗 <b>Portfólio:</b> {{ $json.portfolio || 'Não informado' }}\n📸 <b>Instagram:</b> {{ $json.tg_instagram }}\n📣 <b>Como soube:</b> {{ $json.tg_origem_vaga }}",
-        "additionalFields": {
-          "appendAttribution": false,
-          "disable_web_page_preview": true,
-          "parse_mode": "HTML"
+        "method": "POST",
+        "url": "https://api.telegram.org/bot8771377909:AAEFG_egqXoFOM6Vc8cpnCRmFWbwqTNbgNQ/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"chat_id\": -5233253304,\n  \"text\": {{ JSON.stringify($json.tg_text) }},\n  \"parse_mode\": \"HTML\",\n  \"disable_web_page_preview\": true\n}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
         }
       },
-      "id": "node-telegram",
-      "name": "Telegram · Aviso",
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
-      "position": [820, 240],
-      "credentials": {
-        "telegramApi": {
-          "id": "VlNV1ssb2ec5YoTZ",
-          "name": "Telegram vagasbssbot"
-        }
-      },
+      "id": "node-telegram-http",
+      "name": "Telegram · HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [780, 240],
       "continueOnFail": true,
       "onError": "continueRegularOutput"
     },
@@ -91,8 +90,10 @@
         },
         "sheetName": {
           "__rl": true,
-          "value": "Página1",
-          "mode": "list"
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BhmEFOxHU5VOS8SW-Z_sFizID40uBzkroX767ZvDKnY/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -140,7 +141,7 @@
       "name": "Google Sheets · Append",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
-      "position": [820, 480],
+      "position": [560, 480],
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "WEgGnutZ2aRmAiW2",
@@ -167,7 +168,7 @@
       "main": [
         [
           {
-            "node": "Escape HTML",
+            "node": "Montar texto Telegram",
             "type": "main",
             "index": 0
           },
@@ -179,11 +180,11 @@
         ]
       ]
     },
-    "Escape HTML": {
+    "Montar texto Telegram": {
       "main": [
         [
           {
-            "node": "Telegram · Aviso",
+            "node": "Telegram · HTTP Request",
             "type": "main",
             "index": 0
           }
