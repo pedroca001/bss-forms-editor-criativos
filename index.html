@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Editor de Criativo — BSS Marketing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0b0b0b;
+    --surface: #141414;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.15);
+    --text: #f0ede8;
+    --muted: rgba(240,237,232,0.55);
+    --accent: #ff6a00;
+    --accent-hover: #ff8326;
+    --accent-dim: rgba(255,106,0,0.12);
+    --error: #ff5b5b;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Syne', sans-serif; font-size: 16px; line-height: 1.6;
+    min-height: 100vh; -webkit-font-smoothing: antialiased;
+  }
+  #root { min-height: 100vh; }
+  .container { max-width: 740px; margin: 0 auto; padding: 0 24px; }
+
+  /* ===== LANDING ===== */
+  header { border-bottom: 1px solid var(--border); padding: 28px 0; }
+  header .container { display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-size: 13px; font-family: 'DM Mono', monospace; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .badge {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(255,106,0,0.25);
+    border-radius: 4px; padding: 4px 10px;
+  }
+
+  .hero { padding: 72px 0 56px; border-bottom: 1px solid var(--border); }
+  .hero-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+  .hero h1 { font-size: clamp(36px, 6vw, 56px); font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 24px; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero-sub { font-size: 17px; color: var(--muted); line-height: 1.65; max-width: 560px; }
+
+  .intro { padding: 56px 0; border-bottom: 1px solid var(--border); }
+  .intro p { font-size: 16px; color: rgba(240,237,232,0.72); line-height: 1.75; margin-bottom: 16px; }
+  .intro p:last-child { margin-bottom: 0; }
+
+  section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 28px; }
+
+  .item-list { list-style: none; display: flex; flex-direction: column; }
+  .item-list li { display: flex; gap: 16px; padding: 16px 0; border-top: 1px solid var(--border); align-items: flex-start; }
+  .item-list li:last-child { border-bottom: 1px solid var(--border); }
+  .item-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); min-width: 20px; padding-top: 2px; }
+  .item-text { font-size: 15px; color: rgba(240,237,232,0.82); line-height: 1.6; }
+  .item-tag {
+    display: inline-block; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent);
+    background: var(--accent-dim); border-radius: 3px; padding: 2px 7px; margin-left: 8px;
+    vertical-align: middle; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+
+  .format-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+  .format-card { background: var(--surface); border: 1px solid var(--border-strong); border-radius: 8px; padding: 24px 20px; }
+  .format-card .fc-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .format-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .format-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  .process-steps { display: flex; flex-direction: column; position: relative; }
+  .process-steps::before { content: ''; position: absolute; left: 15px; top: 32px; bottom: 32px; width: 1px; background: var(--border-strong); }
+  .step { display: flex; gap: 20px; align-items: flex-start; padding: 12px 0; }
+  .step-dot {
+    width: 31px; height: 31px; border-radius: 50%;
+    border: 1px solid var(--border-strong); background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent);
+    flex-shrink: 0; position: relative; z-index: 1;
+  }
+  .step-content { padding-top: 4px; }
+  .step-content strong { display: block; font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .step-content span { font-size: 13px; color: var(--muted); }
+
+  .cta-section { padding: 56px 0 80px; border-bottom: none; }
+  .info-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+  .info-pill {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'DM Mono', monospace; font-size: 12px; color: rgba(240,237,232,0.65);
+    background: var(--surface); border: 1px solid var(--border-strong);
+    border-radius: 6px; padding: 8px 14px; letter-spacing: 0.04em;
+  }
+  .cta-title { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .cta-sub { font-size: 14px; color: var(--muted); margin-bottom: 32px; }
+
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--accent); color: #0b0b0b;
+    font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
+    border: none; cursor: pointer; text-decoration: none;
+    border-radius: 6px; padding: 16px 32px;
+    transition: background .15s, transform .1s;
+  }
+  .cta-btn:hover:not(:disabled) { background: var(--accent-hover); transform: translateY(-1px); }
+  .cta-btn:active { transform: translateY(0); }
+  .cta-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .cta-arrow { font-size: 18px; transition: transform .15s; }
+  .cta-btn:hover .cta-arrow { transform: translateX(3px); }
+  .cta-note { margin-top: 16px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.06em; }
+
+  /* ===== FORM FLOW ===== */
+  .flow { min-height: 100vh; display: flex; flex-direction: column; }
+  .flow-top { padding: 20px 0; border-bottom: 1px solid var(--border); }
+  .flow-top .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .progress { flex: 1; height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; max-width: 360px; }
+  .progress-fill { height: 100%; background: var(--accent); transition: width .3s ease; }
+  .progress-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.08em; white-space: nowrap; }
+  .back-btn {
+    background: none; border: 1px solid var(--border-strong); color: var(--muted);
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 6px 12px; border-radius: 4px; cursor: pointer;
+    transition: color .15s, border-color .15s;
+  }
+  .back-btn:hover:not(:disabled) { color: var(--text); border-color: var(--text); }
+  .back-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  .flow-body { flex: 1; display: flex; align-items: center; padding: 40px 0; }
+  .question { width: 100%; animation: slideIn .35s ease; }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .q-num { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent); margin-bottom: 14px; letter-spacing: 0.08em; }
+  .q-label { font-size: clamp(22px, 3.4vw, 30px); font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; margin-bottom: 10px; color: var(--text); }
+  .q-help { font-size: 14px; color: var(--muted); margin-bottom: 28px; font-family: 'DM Mono', monospace; }
+
+  .input-wrap { position: relative; }
+  .input-wrap[data-prefix]::before {
+    content: attr(data-prefix); position: absolute; left: 0; top: 14px;
+    color: var(--muted); font-size: 22px; pointer-events: none; font-family: 'Syne', sans-serif;
+  }
+  .input-wrap[data-prefix] .q-input { padding-left: 48px; }
+
+  .q-input, .q-textarea, .q-select {
+    width: 100%; background: transparent; border: none;
+    border-bottom: 2px solid var(--border-strong); color: var(--text);
+    font-family: 'Syne', sans-serif; font-size: 22px; padding: 12px 0;
+    outline: none; transition: border-color .15s;
+  }
+  .q-input::placeholder, .q-textarea::placeholder { color: rgba(240,237,232,0.25); }
+  .q-input:focus, .q-textarea:focus, .q-select:focus { border-color: var(--accent); }
+  .q-textarea { min-height: 90px; resize: vertical; line-height: 1.5; font-size: 18px; }
+  .q-select {
+    appearance: none; -webkit-appearance: none; cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23ff6a00' stroke-width='2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 4px center; padding-right: 28px;
+  }
+  .q-select option { background: var(--surface); color: var(--text); }
+
+  .q-counter { margin-top: 8px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); text-align: right; }
+  .q-error { margin-top: 14px; font-size: 13px; color: var(--error); font-family: 'DM Mono', monospace; }
+  .q-actions { margin-top: 36px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .next-hint { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.08em; }
+  .next-hint kbd {
+    background: var(--surface); border: 1px solid var(--border-strong); border-radius: 3px;
+    padding: 2px 6px; font-family: inherit; font-size: 10px; color: var(--text); margin: 0 2px;
+  }
+
+  .submit-error-banner {
+    margin-bottom: 20px; background: rgba(255,91,91,0.08);
+    border: 1px solid rgba(255,91,91,0.3); color: var(--error);
+    padding: 12px 16px; border-radius: 6px; font-size: 13px; font-family: 'DM Mono', monospace;
+  }
+
+  .thanks-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px 24px; text-align: center; }
+  .thanks-inner { max-width: 580px; }
+  .thanks-tag { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 20px; }
+  .thanks-title { font-size: clamp(28px, 4vw, 40px); font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 20px; }
+  .thanks-text { font-size: 16px; color: var(--muted); line-height: 1.7; }
+
+  @media (max-width: 540px) {
+    .format-grid { grid-template-columns: 1fr; }
+    header .container { flex-direction: column; gap: 12px; align-items: flex-start; }
+    .q-input, .q-select { font-size: 19px; }
+    .input-wrap[data-prefix]::before { font-size: 19px; top: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!--
+  Netlify Forms detection: this static form is parsed at build time so
+  Netlify's bot can register the form. The React app submits the same
+  form-name + fields via fetch on submit.
+-->
+<form name="candidatura-editor-criativos" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="text" name="bot-field" />
+  <input type="text" name="nome_completo" />
+  <input type="text" name="cpf" />
+  <input type="text" name="idade" />
+  <input type="email" name="email" />
+  <input type="text" name="celular" />
+  <input type="text" name="expectativa_remuneracao" />
+  <input type="text" name="nivel_ingles" />
+  <input type="text" name="nivel_experiencia" />
+  <input type="text" name="tipos_video" />
+  <textarea name="softwares_edicao"></textarea>
+  <textarea name="inteligencias_artificiais"></textarea>
+  <textarea name="cursos_mentorias"></textarea>
+  <input type="url" name="portfolio" />
+  <input type="url" name="linkedin" />
+  <input type="text" name="origem_vaga" />
+</form>
+
+<div id="root"></div>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel" data-presets="env,react">
+const { useState, useEffect, useRef } = React;
+
+const WEBHOOK_URL = 'https://n8n-n8n.7b7hsj.easypanel.host/webhook/formulario';
+const NETLIFY_FORM_NAME = 'candidatura-editor-criativos';
+
+const ROUTES = {
+  LANDING: '/editor-criativos',
+  FORM: '/forms-editor-criativos'
+};
+
+const QUESTIONS = [
+  { key: 'nome_completo', label: 'Qual o seu nome completo?', type: 'text', required: true },
+  { key: 'cpf', label: 'Qual o seu CPF?', type: 'cpf', required: true, help: 'Apenas números — formataremos para você.' },
+  { key: 'idade', label: 'Quantos anos você tem?', type: 'number', required: true, min: 14, max: 99 },
+  { key: 'email', label: 'Qual o seu melhor e-mail?', type: 'email', required: true },
+  { key: 'celular', label: 'Qual o seu celular (WhatsApp)?', type: 'phone', required: true, help: 'Brasil (+55) — apenas números.' },
+  { key: 'expectativa_remuneracao', label: 'Qual a sua expectativa de remuneração?', type: 'money', required: true, help: 'Em reais (R$). Pode usar decimais.' },
+  { key: 'nivel_ingles', label: 'Qual o seu nível de inglês?', type: 'select', required: true,
+    options: ['Nenhum', 'Básico', 'Intermediário', 'Avançado', 'Fluente'] },
+  { key: 'nivel_experiencia', label: 'Em qual nível de experiência como editor de vídeos você se classifica?', type: 'select', required: true,
+    options: ['Júnior', 'Pleno', 'Sênior'] },
+  { key: 'tipos_video', label: 'Quais tipos de vídeo você já editou?', type: 'text', required: true,
+    placeholder: 'Ex: VSL, YouTube, criativos para anúncio, redes sociais' },
+  { key: 'softwares_edicao', label: 'Quais softwares de edição você domina?', type: 'textarea', required: true },
+  { key: 'inteligencias_artificiais', label: 'Quais inteligências artificiais você utiliza no seu processo de edição?', type: 'textarea', required: true },
+  { key: 'cursos_mentorias', label: 'Quais cursos ou mentorias você já fez?', type: 'textarea', required: true, maxLength: 500 },
+  { key: 'portfolio', label: 'Link do seu portfólio', type: 'url', required: false, help: 'Opcional — mas candidaturas sem portfólio podem ser desconsideradas.' },
+  { key: 'linkedin', label: 'Link do seu LinkedIn', type: 'url', required: true, placeholder: 'https://linkedin.com/in/...' },
+  { key: 'origem_vaga', label: 'Como você soube dessa vaga?', type: 'text', required: true }
+];
+
+// ===== HELPERS =====
+const maskCPF = (v) => {
+  const d = v.replace(/\D/g, '').slice(0, 11);
+  return d.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+};
+const maskPhone = (v) => {
+  const d = v.replace(/\D/g, '').slice(0, 11);
+  if (d.length > 10) return d.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3').trim().replace(/-$/, '');
+  if (d.length > 6)  return d.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3').trim().replace(/-$/, '');
+  if (d.length > 2)  return d.replace(/(\d{2})(\d{0,5})/, '($1) $2').trim();
+  return d;
+};
+const isValidCPF = (s) => {
+  const c = s.replace(/\D/g, '');
+  if (c.length !== 11 || /^(\d)\1{10}$/.test(c)) return false;
+  let sum = 0;
+  for (let i = 0; i < 9; i++) sum += parseInt(c[i]) * (10 - i);
+  let d1 = (sum * 10) % 11; if (d1 === 10) d1 = 0;
+  if (d1 !== parseInt(c[9])) return false;
+  sum = 0;
+  for (let i = 0; i < 10; i++) sum += parseInt(c[i]) * (11 - i);
+  let d2 = (sum * 10) % 11; if (d2 === 10) d2 = 0;
+  return d2 === parseInt(c[10]);
+};
+const isValidEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+const isValidUrl = (v) => { try { new URL(v); return true; } catch { return false; } };
+
+function validate(q, value) {
+  const v = (value ?? '').toString().trim();
+  if (!v) return q.required ? 'Esse campo é obrigatório.' : null;
+  if (q.type === 'cpf' && !isValidCPF(v)) return 'CPF inválido.';
+  if (q.type === 'email' && !isValidEmail(v)) return 'E-mail inválido.';
+  if (q.type === 'phone' && v.replace(/\D/g, '').length < 10) return 'Celular inválido.';
+  if (q.type === 'url' && !isValidUrl(v)) return 'URL inválida — comece com https://';
+  if (q.type === 'number') {
+    const n = Number(v);
+    if (Number.isNaN(n)) return 'Informe um número.';
+    if (q.min != null && n < q.min) return `Mínimo: ${q.min}.`;
+    if (q.max != null && n > q.max) return `Máximo: ${q.max}.`;
+  }
+  if (q.type === 'money' && Number.isNaN(Number(v))) return 'Valor inválido.';
+  if (q.maxLength && v.length > q.maxLength) return `Máximo ${q.maxLength} caracteres.`;
+  return null;
+}
+
+const encodeForm = (data) =>
+  Object.keys(data).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(data[k])).join('&');
+
+function navigate(path) {
+  window.history.pushState({}, '', path);
+  window.dispatchEvent(new PopStateEvent('popstate'));
+}
+
+// ===== LANDING =====
+function Landing() {
+  const onApply = (e) => { e.preventDefault(); navigate(ROUTES.FORM); };
+  return (
+    <React.Fragment>
+      <header>
+        <div className="container">
+          <span className="logo">BSS Marketing</span>
+          <span className="badge">Vaga aberta</span>
+        </div>
+      </header>
+
+      <main>
+        <div className="hero">
+          <div className="container">
+            <p className="hero-label">Editor de Criativo · Direct Response</p>
+            <h1>Você edita pensando<br/>no <em>clique,</em> não no like.</h1>
+            <p className="hero-sub">Buscamos um editor fixo para construir criativos que performam de verdade — vídeos que travam o scroll e microleads que convertem. Posição de longo prazo dentro de uma operação enxuta e movida a resultado.</p>
+          </div>
+        </div>
+
+        <div className="intro">
+          <div className="container">
+            <p>Na BSS Marketing, a gente opera no mercado de infoprodutos com foco em campanhas de direct response. Isso significa ciclos rápidos, muita iteração e total comprometimento com o que os números dizem.</p>
+            <p>Cultura aqui é feita de autonomia, velocidade e responsabilidade.</p>
+          </div>
+        </div>
+
+        <section>
+          <div className="container">
+            <p className="section-label">O que você vai produzir</p>
+            <div className="format-grid">
+              <div className="format-card">
+                <p className="fc-tag">Formato 01</p>
+                <h3>Criativos de Performance</h3>
+                <p>Vídeos construídos para parar o scroll — com foco em hooks cirúrgicos, timing de corte e avatares que se conectam com o público.</p>
+              </div>
+              <div className="format-card">
+                <p className="fc-tag">Formato 02</p>
+                <h3>Microleads</h3>
+                <p>Conteúdos curtos voltados para captura e qualificação de leads dentro dos funis de venda. Objetivo claro, execução precisa.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div className="container">
+            <p className="section-label">Responsabilidades</p>
+            <ul className="item-list">
+              <li><span className="item-num">01</span><span className="item-text">Editar criativos de alta performance, com domínio de ritmo, corte e storytelling visual alinhado ao direct response.</span></li>
+              <li><span className="item-num">02</span><span className="item-text">Manter comunicação ativa com o time para garantir o fluxo de entrega e resolver impasses antes que virem problema.</span></li>
+              <li><span className="item-num">03</span><span className="item-text">Acompanhar o que está funcionando no mercado — tendências, formatos, abordagens — e trazer isso para a edição.</span></li>
+              <li><span className="item-num">04</span><span className="item-text">Participar dos ciclos de teste e revisão, ajustando peças com base em dados reais de tráfego pago.</span></li>
+            </ul>
+          </div>
+        </section>
+
+        <section>
+          <div className="container">
+            <p className="section-label">O que buscamos</p>
+            <ul className="item-list">
+              <li><span className="item-num">→</span><span className="item-text">Portfólio com criativos de performance comprovados — reels, cortes e vídeos para mídia paga.<span className="item-tag">obrigatório</span></span></li>
+              <li><span className="item-num">→</span><span className="item-text">Olhar estratégico: você entende que o criativo começa no hook e termina na conversão, não na estética.</span></li>
+              <li><span className="item-num">→</span><span className="item-text">Capacidade de gerenciar prazos com seriedade — aqui volume e consistência são parte do trabalho.</span></li>
+              <li><span className="item-num">→</span><span className="item-text">Atenção a detalhe e proatividade. Você não espera ser chamado para apontar um problema.</span></li>
+              <li><span className="item-num">→</span><span className="item-text">Motion design.<span className="item-tag">diferencial</span></span></li>
+            </ul>
+          </div>
+        </section>
+
+        <section>
+          <div className="container">
+            <p className="section-label">Processo seletivo</p>
+            <div className="process-steps">
+              <div className="step"><div className="step-dot">1</div><div className="step-content"><strong>Recebimento de candidaturas</strong><span>Preencha o formulário com portfólio e pretensão salarial.</span></div></div>
+              <div className="step"><div className="step-dot">2</div><div className="step-content"><strong>Seleção</strong><span>Analisamos os perfis que chegaram e avançamos os mais alinhados.</span></div></div>
+              <div className="step"><div className="step-dot">3</div><div className="step-content"><strong>Teste prático</strong><span>Uma edição real para entender como você pensa e executa.</span></div></div>
+              <div className="step"><div className="step-dot">4</div><div className="step-content"><strong>Conversa com o time</strong><span>Bate-papo direto com o responsável da área.</span></div></div>
+            </div>
+          </div>
+        </section>
+
+        <div className="cta-section">
+          <div className="container">
+            <div className="info-bar">
+              <div className="info-pill">100% remoto</div>
+              <div className="info-pill">Contratação PJ</div>
+              <div className="info-pill">Posição fixa</div>
+            </div>
+            <p className="cta-title">Pronto para aplicar?</p>
+            <p className="cta-sub">Inclua sua pretensão salarial no formulário. Portfólio é obrigatório.</p>
+            <a href={ROUTES.FORM} className="cta-btn" onClick={onApply}>
+              Preencher formulário
+              <span className="cta-arrow">→</span>
+            </a>
+            <p className="cta-note">Candidaturas sem portfólio não serão consideradas.</p>
+          </div>
+        </div>
+      </main>
+    </React.Fragment>
+  );
+}
+
+// ===== QUESTION FIELD =====
+function QuestionField({ q, value, onChange, onEnter, autoFocus }) {
+  const ref = useRef(null);
+  useEffect(() => { if (autoFocus && ref.current) ref.current.focus(); }, [autoFocus, q.key]);
+
+  const handleChange = (e) => {
+    let v = e.target.value;
+    if (q.type === 'cpf') v = maskCPF(v);
+    else if (q.type === 'phone') v = maskPhone(v);
+    onChange(v);
+  };
+  const handleKey = (e) => {
+    if (e.key === 'Enter' && q.type !== 'textarea') { e.preventDefault(); onEnter(); }
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && q.type === 'textarea') { e.preventDefault(); onEnter(); }
+  };
+
+  if (q.type === 'select') {
+    return (
+      <select ref={ref} className="q-select" value={value || ''} onChange={handleChange} onKeyDown={handleKey}>
+        <option value="">Selecione...</option>
+        {q.options.map(o => <option key={o} value={o}>{o}</option>)}
+      </select>
+    );
+  }
+  if (q.type === 'textarea') {
+    return (
+      <React.Fragment>
+        <textarea ref={ref} className="q-textarea" value={value || ''} onChange={handleChange} onKeyDown={handleKey} maxLength={q.maxLength} />
+        {q.maxLength && <div className="q-counter">{(value || '').length}/{q.maxLength}</div>}
+      </React.Fragment>
+    );
+  }
+
+  const inputType = q.type === 'email' ? 'email'
+                  : q.type === 'url' ? 'url'
+                  : (q.type === 'number' || q.type === 'money') ? 'number'
+                  : q.type === 'phone' ? 'tel' : 'text';
+  const wrapProps = q.type === 'money' ? { 'data-prefix': 'R$' }
+                  : q.type === 'phone' ? { 'data-prefix': '+55' } : {};
+
+  return (
+    <div className="input-wrap" {...wrapProps}>
+      <input ref={ref} type={inputType} className="q-input"
+        value={value || ''} onChange={handleChange} onKeyDown={handleKey}
+        placeholder={q.placeholder || ''}
+        inputMode={q.type === 'number' || q.type === 'money' || q.type === 'phone' || q.type === 'cpf' ? 'numeric' : undefined}
+        min={q.min} max={q.max} step={q.type === 'money' ? '0.01' : undefined}
+      />
+    </div>
+  );
+}
+
+// ===== FORM FLOW =====
+function FormFlow({ onDone }) {
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [error, setError] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
+
+  const q = QUESTIONS[step];
+  const isLast = step === QUESTIONS.length - 1;
+  const progress = (step / QUESTIONS.length) * 100;
+
+  const update = (val) => {
+    setAnswers(prev => ({ ...prev, [q.key]: val }));
+    if (error) setError(null);
+  };
+
+  const handleNext = async () => {
+    const err = validate(q, answers[q.key]);
+    if (err) { setError(err); return; }
+    if (!isLast) { setStep(step + 1); return; }
+
+    setSubmitting(true);
+    setSubmitError(false);
+
+    const payload = {};
+    QUESTIONS.forEach(qq => { payload[qq.key] = (answers[qq.key] || '').toString().trim(); });
+    if (payload.celular) payload.celular = '+55 ' + payload.celular;
+
+    // Submit to Netlify Forms (always — it's the source of truth backup)
+    const netlifyBody = encodeForm({ 'form-name': NETLIFY_FORM_NAME, 'bot-field': '', ...payload });
+    const netlifyPromise = fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: netlifyBody
+    }).catch(() => null);
+
+    // Submit to n8n webhook in parallel
+    const webhookPromise = fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(() => null);
+
+    const [netlifyRes, webhookRes] = await Promise.all([netlifyPromise, webhookPromise]);
+
+    // Success if at least one of them captured the data.
+    const netlifyOk = netlifyRes && netlifyRes.ok;
+    const webhookOk = webhookRes && webhookRes.status === 200;
+
+    if (netlifyOk || webhookOk) {
+      onDone();
+    } else {
+      setSubmitError(true);
+      setSubmitting(false);
+    }
+  };
+
+  const handleBack = () => {
+    if (step === 0) { navigate(ROUTES.LANDING); return; }
+    setError(null);
+    setStep(step - 1);
+  };
+
+  return (
+    <div className="flow">
+      <div className="flow-top">
+        <div className="container">
+          <button className="back-btn" onClick={handleBack} disabled={submitting}>← Voltar</button>
+          <div className="progress"><div className="progress-fill" style={{ width: `${progress}%` }}/></div>
+          <span className="progress-label">{step + 1} / {QUESTIONS.length}</span>
+        </div>
+      </div>
+      <div className="flow-body">
+        <div className="container">
+          {submitError && (
+            <div className="submit-error-banner">Erro ao enviar. Tente novamente em instantes.</div>
+          )}
+          <div className="question" key={q.key}>
+            <p className="q-num">Pergunta {step + 1}{q.required ? ' · obrigatória' : ' · opcional'}</p>
+            <h2 className="q-label">{q.label}</h2>
+            {q.help && <p className="q-help">{q.help}</p>}
+            <QuestionField q={q} value={answers[q.key]} onChange={update} onEnter={handleNext} autoFocus />
+            {error && <div className="q-error">{error}</div>}
+            <div className="q-actions">
+              <button className="cta-btn" onClick={handleNext} disabled={submitting}>
+                {submitting ? 'Enviando...' : (isLast ? 'Enviar candidatura' : 'Continuar')}
+                {!submitting && <span className="cta-arrow">→</span>}
+              </button>
+              {!submitting && (
+                <span className="next-hint">
+                  pressione <kbd>{q.type === 'textarea' ? 'Ctrl+Enter' : 'Enter'}</kbd>
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ===== THANKS =====
+function Thanks() {
+  return (
+    <div className="thanks-screen">
+      <div className="thanks-inner">
+        <p className="thanks-tag">Candidatura recebida</p>
+        <h1 className="thanks-title">Obrigado pelo seu interesse.</h1>
+        <p className="thanks-text">Agradecemos seu tempo e o interesse em fazer parte da nossa equipe! Caso você seja selecionado para a próxima etapa do processo seletivo, nossa equipe entrará em contato.</p>
+      </div>
+    </div>
+  );
+}
+
+// ===== APP / ROUTING =====
+function App() {
+  const [path, setPath] = useState(window.location.pathname);
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    const onPop = () => { setPath(window.location.pathname); setDone(false); };
+    window.addEventListener('popstate', onPop);
+    // Redirect root to landing
+    if (window.location.pathname === '/' || window.location.pathname === '') {
+      window.history.replaceState({}, '', ROUTES.LANDING);
+      setPath(ROUTES.LANDING);
+    }
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
+
+  useEffect(() => { window.scrollTo(0, 0); }, [path, done]);
+
+  if (done) return <Thanks />;
+  if (path === ROUTES.FORM) return <FormFlow onDone={() => setDone(true)} />;
+  return <Landing />;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
