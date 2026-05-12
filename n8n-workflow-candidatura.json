@@ -1,0 +1,117 @@
+{
+  "name": "BSS — Candidatura Editor de Criativos",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "formulario",
+        "responseMode": "onReceived",
+        "responseData": "allEntries",
+        "options": {}
+      },
+      "id": "webhook-1",
+      "name": "Webhook Formulário",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [260, 300],
+      "webhookId": "formulario"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => ({ json: item.json.body }));"
+      },
+      "id": "code-1",
+      "name": "Extrair Body",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "5996574668",
+        "text": "=🟢 *Nova candidatura — Editor de Criativos*\n\n👤 *Nome:* {{ $json.nome_completo }}\n🪪 *CPF:* {{ $json.cpf }}\n🎂 *Idade:* {{ $json.idade }}\n📧 *E-mail:* {{ $json.email }}\n📱 *Celular:* {{ $json.celular }}\n💰 *Pretensão:* R$ {{ $json.expectativa_remuneracao }}\n🌐 *Inglês:* {{ $json.nivel_ingles }}\n🎬 *Experiência:* {{ $json.nivel_experiencia }}\n📹 *Tipos de vídeo:* {{ $json.tipos_video }}\n🛠 *Softwares:* {{ $json.softwares_edicao }}\n🤖 *IAs que usa:* {{ $json.inteligencias_artificiais }}\n📚 *Cursos:* {{ $json.cursos_mentorias }}\n🔗 *Portfólio:* {{ $json.portfolio || 'Não informado' }}\n📸 *Instagram:* {{ $json.instagram }}\n📣 *Como soube:* {{ $json.origem_vaga }}",
+        "additionalFields": {
+          "parse_mode": "Markdown",
+          "appendAttribution": false
+        }
+      },
+      "id": "telegram-1",
+      "name": "Telegram — Aviso",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [700, 200],
+      "credentials": {
+        "telegramApi": {
+          "id": "",
+          "name": "Telegram vagasbssbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1BhmEFOxHU5VOS8SW-Z_sFizID40uBzkroX767ZvDKnY",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Página1",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "matchingColumns": []
+        },
+        "options": {}
+      },
+      "id": "sheets-1",
+      "name": "Google Sheets — Candidaturas",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [700, 420],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "Google Sheets"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook Formulário": {
+      "main": [
+        [
+          {
+            "node": "Extrair Body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Body": {
+      "main": [
+        [
+          {
+            "node": "Telegram — Aviso",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Sheets — Candidaturas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": []
+}
