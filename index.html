@@ -375,7 +375,7 @@
   <textarea name="inteligencias_artificiais"></textarea>
   <textarea name="cursos_mentorias"></textarea>
   <input type="url" name="portfolio" />
-  <input type="url" name="linkedin" />
+  <input type="text" name="instagram" />
   <input type="text" name="origem_vaga" />
 </form>
 
@@ -409,7 +409,7 @@ const QUESTIONS = [
   { key: 'inteligencias_artificiais', label: 'Quais inteligências artificiais você utiliza no seu processo de edição?', type: 'textarea', required: true },
   { key: 'cursos_mentorias', label: 'Quais cursos ou mentorias você já fez?', type: 'textarea', required: true, maxLength: 500 },
   { key: 'portfolio', label: 'Link do seu portfólio', type: 'url', required: false, help: 'Opcional — mas candidaturas sem portfólio podem ser desconsideradas.' },
-  { key: 'linkedin', label: 'Link do seu LinkedIn', type: 'url', required: true, placeholder: 'https://linkedin.com/in/...' },
+  { key: 'instagram', label: 'Qual o seu @ do Instagram?', type: 'text', required: true, placeholder: '@seuusuario' },
   { key: 'origem_vaga', label: 'Como você soube dessa vaga?', type: 'text', required: true }
 ];
 
